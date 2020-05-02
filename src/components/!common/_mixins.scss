@@ -1,0 +1,122 @@
+// @include hover-color();
+@mixin hover-color( $color, $type : 'darken', $percent : 20% ) {
+	color: $color;
+	transition: color .3s linear;
+
+	&:hover {
+		@if type-of($type) == color {
+			color: $type;
+		}
+
+		@if $type == 'darken' {
+			color: darken( $color, $percent );
+		}
+
+		@if $type == 'lighten' {
+			color: lighten( $color, $percent );
+		}
+	}
+}
+
+// @include rtl();
+@mixin rtl() {
+	html[dir=rtl] & {
+		@content
+	}
+}
+
+// @include ltr();
+@mixin ltr() {
+	html[dir=ltr] & {
+		@content
+	}
+}
+
+//@include clear-button();
+@mixin clear-button {
+	border: 0;
+	outline: 0;
+	background-color: transparent;
+	text-decoration: none;
+	font-size: inherit;
+	font-weight: inherit;
+	font-family: inherit;
+	padding: 0;
+	-webkit-tap-highlight-color: transparent;
+}
+
+@mixin default-button {
+	@include clear-button();
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+//@include placeholder {color: #eee;}
+@mixin placeholder {
+	&::-webkit-input-placeholder {@content}
+	&:-moz-placeholder           {@content}
+	&::-moz-placeholder          {@content}
+	&:-ms-input-placeholder      {@content}
+}
+
+//@include min( size )
+@mixin min( $sz ) {
+	@if map-has-key($screens, $sz) {
+		@media screen and ( min-width: #{ rem( map-get( $screens, $sz ) ) } ) {
+			@content;
+		}
+	}
+	@else {
+		@media screen and ( min-width: $sz ) {
+			@content;
+		}
+	}
+}
+
+//@include hr( $color, $size );
+@mixin hr( $color:#ccc, $size: 1px  ) {
+	border: none;
+	background-color: $color;
+	color: $color;
+	height: $size;
+}
+
+//@include debug();
+@mixin debug( $color:red, $size: 1px ) {
+	box-shadow: inset 0px 0px $size 0px rgba($color, 1 );
+}
+
+@mixin underline( $color, $height, $padding:100%, $style:solid ) {
+	@if $style == solid {
+		background-image: linear-gradient(to right, $color, $color 100%);
+		background-size: 10px $height;
+	}
+
+	@if $style == dashed {
+		background-image: linear-gradient(to right, $color, $color 60%, transparent 60%);
+		background-size: 4px $height;
+	}
+
+	@if $style == dotted {
+		background-image: linear-gradient(to right, $color, $color 50%, transparent 50%);
+		background-size: 3px $height;
+	}
+
+	background-position: 0 $padding;
+	background-repeat: repeat-x;
+	text-decoration: none;
+}
+
+//@gradient gradient( yellow, red );
+@mixin gradient($from, $to) {
+	background: $from;
+	background: -moz-linear-gradient(top,  $from 0%, $to 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$from), color-stop(100%,$to)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  $from 0%,$to 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  $from 0%,$to 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  $from 0%,$to 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  $from 0%,$to 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$from', endColorstr='$to',GradientType=0 ); /* IE6-8 */
+}

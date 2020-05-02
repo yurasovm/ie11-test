@@ -1,0 +1,66 @@
+@function rem($pixels, $context: $baseFontSize) {
+	@if (unitless($pixels)) {
+		$pixels: $pixels * 1px;
+	}
+
+	@if (unitless($context)) {
+		$context: $context * 1px;
+	}
+
+	@return $pixels / $context * 1rem;
+}
+
+@function lh( $font-size, $line-height ) {
+	@return $line-height / $font-size;
+}
+
+@function em($pixels, $context: $baseFontSize) {
+	@if (unitless($pixels)) {
+		$pixels: $pixels * 1px;
+	}
+
+	@if (unitless($context)) {
+		$context: $context * 1px;
+	}
+
+	@return $pixels / $context * 1em;
+}
+
+//background-color: color( $color );
+@function color( $key ) {
+	@if map-has-key($colors, $key) {
+		@return map-get($colors, $key);
+	}
+
+	@warn "Unknown `#{$key}` in $colors.";
+	@return null;
+}
+
+//width: screen( $size );
+@function screen( $size ) {
+	@if map-has-key( $screens, $size ) {
+		@return rem( map-get( $screens, $size ) * 1px );
+	} @else {
+		@return $size;
+	}
+}
+
+//font-family: font( $font );
+@function font( $font ) {
+	@if map-has-key($fonts, $font) {
+		@return map-get($fonts, $font);
+	}
+
+	@warn "Unknown `#{$font}` in $fonts.";
+	@return null;
+}
+
+//z-index: z( $key );
+@function z( $key ) {
+	@if map-has-key($z-layers, $key) {
+		@return map-get($z-layers, $key);
+	}
+
+	@warn "Unknown `#{$key}` in $z-layers.";
+	@return null;
+}

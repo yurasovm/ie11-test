@@ -1,0 +1,56 @@
+//@include h1();
+@mixin h1 {
+	color: #15151a;
+	font-size: rem(34);
+	font-weight: 300;
+	line-height: lh( 34, 46 );
+	text-align: center;
+
+	@include min( sm ) {
+		font-size: rem(24);
+		line-height: lh( 24, 32 );
+	}
+}
+
+//@include h2();
+@mixin h2 {
+	font-size: rem(26);
+	font-weight: 400;
+
+	@include min( sm ) {
+		font-size: rem(20);
+	}
+}
+
+//@include h3();
+@mixin h3 {
+	color: #33333a;
+	font-size: rem(12);
+	font-weight: 500;
+	letter-spacing: 1px;
+	line-height: lh(12, 40);
+	text-transform: uppercase;
+}
+
+//@include link();
+@mixin link {
+	color: color( accent );
+	text-decoration: none;
+	transition: color 0.3s linear;
+
+	&:hover {
+		color: lighten( color( accent ) , 20% );
+	}
+}
+
+//@include link-dark();
+@mixin link-dark {
+	color: #000;
+	text-decoration: none;
+	transition: color 0.3s linear;
+	@include underline( lighten( #000, 90% ), 1px );
+
+	&:hover {
+		color: lighten( #000 , 50% );
+	}
+}

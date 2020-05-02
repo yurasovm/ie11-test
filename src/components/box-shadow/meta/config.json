@@ -1,0 +1,9 @@
+{
+    "title": "box-shadow",
+    "description": "",
+    "renderToDoc": false,
+    "renderAssets": false,
+    "componentDepends": [],
+    "renderDepends": [],
+    "group": "components"
+}

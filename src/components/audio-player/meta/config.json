@@ -1,0 +1,9 @@
+{
+    "title": "audio-player",
+    "description": "",
+    "renderToDoc": false,
+    "renderAssets": false,
+    "componentDepends": [],
+    "renderDepends": [],
+    "group": "components"
+}

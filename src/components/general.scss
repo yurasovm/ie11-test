@@ -1,0 +1,8 @@
+// css файлы импортируются без расширения, иначе выдадут ошибку
+@charset "UTF-8";
+
+// @import "!config";
+@import "./!common/_";
+
+// components
+@import "./box-shadow/_";
