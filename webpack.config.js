@@ -19,6 +19,27 @@ const isDev				= process.env.NODE_ENV === 'development'
 const isProd			= !isDev
 const docComponentsPath	= path.resolve( __dirname, 'src', 'documentation', 'pages' );
 
+
+const babelLoader = () => {
+	return {
+		loader	: 'babel-loader',
+		options	: {
+			'presets': [
+				[
+				  "@babel/env",
+				  {
+					"useBuiltIns": "usage",
+					"corejs": 3
+				  }
+				]
+			],
+			'plugins'	: [
+				"@babel/plugin-proposal-class-properties"
+			]
+		}
+	}
+}
+
 const optimization = () => {
 	const config	= {
 		splitChunks	 : { cacheGroups : chunksConfig }
@@ -59,34 +80,6 @@ const cssLoaders = extra => {
 			vars	: constantsConfig
 		}
 	})
-
-	return loaders
-}
-
-const babelOptions = preset => {
-	const opts	= {
-		presets	: [ '@babel/preset-env' ],
-		plugins	: [ '@babel/plugin-proposal-class-properties' ]
-	}
-
-	if ( preset ) {
-		opts.presets.push( preset )
-	}
-
-	return opts
-}
-
-const jsLoaders = () => {
-	const loaders	= [{
-		loader	: 'babel-loader',
-		options	: babelOptions()
-		// loader	: 'babel-loader',
-		// options	: {
-		// 	presets: [
-		// 		'@babel/preset-env'
-		// 	]
-		// }
-	}]
 
 	return loaders
 }
@@ -151,35 +144,18 @@ const getRules = () => {
 			test	: /\.scss$/,
 			exclude	: /node_modules/,
 			use		: cssLoaders('sass-loader')
-		} ,      {
-			test: /\.m?js$/,
-			use: [
-			  {
-				loader: 'babel-loader',
-				options: {
-				  presets: [
-					'@babel/preset-env'
-				  ]
-				}
-			  }
-			]
-		  },
-		  {
-			test: /\.svelte$/,
-			use: [
-			  {
-				loader: 'babel-loader',
-				options: {
-				  presets: [
-					'@babel/preset-env'
-				  ],
-				}
-			  },
-			  {
-				loader: 'svelte-loader'
-			  }
-			]
-		  }
+		}, {
+			test	: /\.m?js$/,
+			exclude	: /node_modules\/(?!svelte)/,
+			use		: [babelLoader()]
+		}, {
+			test	: /\.svelte$/,
+			exclude	: /node_modules\/(?!svelte)/,
+			use		: [ babelLoader(), {
+				loader	: 'svelte-loader',
+				options	: {}
+			}]
+		}
 	];
 
 	return rules;
@@ -192,7 +168,7 @@ entrys		= getBundleEntrys();
 optputsPath	= path.resolve( __dirname, 'assets' );
 
 module.exports = [{
-	mode			: 'development',
+	mode			: 'production',
 	entry			: entrys,
 	optimization	: optimization(),
 	devtool			: isDev ? 'inline-source-map' : '',
